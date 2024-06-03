@@ -1,0 +1,76 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: itavaje
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: ad-management
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: ad-management-service
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  profile: localstack
+  environment:
+    ADS_TABLE: ${self:service}-ads
+
+plugins:
+  - serverless-offline
+  - serverless-localstack
+
+custom:
+  localstack:
+    debug: true
+    stages:
+      - local
+
+functions:
+  createAd:
+    handler: handler.createAd
+    events:
+      - http:
+          path: ads
+          method: post
+          cors: true
+  getAds:
+    handler: handler.getAds
+    events:
+      - http:
+          path: ads
+          method: get
+          cors: true
+  getAd:
+    handler: handler.getAd
+    events:
+      - http:
+          path: ads/{id}
+          method: get
+          cors: true
+  updateAd:
+    handler: handler.updateAd
+    events:
+      - http:
+          path: ads/{id}
+          method: put
+          cors: true
+  deleteAd:
+    handler: handler.deleteAd
+    events:
+      - http:
+          path: ads/{id}
+          method: delete
+
+resources:
+  Resources:
+    AdsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.ADS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

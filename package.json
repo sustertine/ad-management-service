@@ -1,0 +1,22 @@
+{
+  "name": "ad-management-service",
+  "version": "1.0.0",
+  "description": "<!-- title: 'Serverless Framework Node Express API service backed by DynamoDB on AWS' description: 'This template demonstrates how to develop and deploy a simple Node Express API service backed by DynamoDB running on AWS Lambda using the Serverless Framework.' layout: Doc framework: v4 platform: AWS language: nodeJS priority: 1 authorLink: 'https://github.com/serverless' authorName: 'Serverless, Inc.' authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4' -->",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.585.0",
+    "@aws-sdk/lib-dynamodb": "^3.585.0",
+    "aws-sdk": "^2.1632.0",
+    "express": "^4.19.2",
+    "serverless-http": "^3.2.0",
+    "serverless-localstack": "^1.2.0",
+    "serverless-offline": "^13.6.0",
+    "uuid": "^9.0.1"
+  },
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
