@@ -8,7 +8,14 @@ const docClient = new AWS.DynamoDB.DocumentClient({
     region: 'us-east-1'
 });
 
-const TABLE_NAME = "ad-management-service-ads";
+const TABLE_NAME = process.env.ADS_TABLE;
+
+module.exports.test = async (event) => {
+    return {
+        statusCode: 200,
+        body: JSON.stringify({message: TABLE_NAME})
+    };
+}
 
 // Create ad
 module.exports.createAd = async (event) => {
@@ -27,9 +34,9 @@ module.exports.createAd = async (event) => {
 
 // Get all ads
 module.exports.getAds = async () => {
-    const data = await docClient.scan({
-        TableName: TABLE_NAME
-    }).promise();
+        const data = await docClient.scan({
+            TableName: TABLE_NAME
+        }).promise();
     return {
         statusCode: 200,
         body: JSON.stringify(data.Items)
@@ -57,7 +64,7 @@ module.exports.getAdById = async (event) => {
 }
 
 // Update ad by id
-module.exports.updateEvenet = async (event) => {
+module.exports.updateAd = async (event) => {
     const {id} = event.pathParameters;
     const {title, description, price} = JSON.parse(event.body);
     await docClient.update({

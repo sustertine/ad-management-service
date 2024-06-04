@@ -9,7 +9,7 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  profile: localstack
+  timeout: 30
   environment:
     ADS_TABLE: ${self:service}-ads
 
@@ -24,6 +24,13 @@ custom:
       - local
 
 functions:
+  test:
+    handler: handler.test
+    events:
+      - http:
+          path: test
+          method: get
+          cors: true
   createAd:
     handler: handler.createAd
     events:
@@ -58,10 +65,11 @@ functions:
       - http:
           path: ads/{id}
           method: delete
+          cors: true
 
 resources:
   Resources:
-    AdsTable:
+    AdsDynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:provider.environment.ADS_TABLE}
